@@ -21,6 +21,14 @@ This project is built for learning purposes with a goal of practicing backend de
     ```
 The API will be available at: http://localhost:8000/
 
+## Database setup:
+This project uses **SQLite** as the database (for now).
+The database file `f1_stats.db` will be created automatically in project root when the app is started.
+- SQLAlchemy is used as the ORM.
+- Database connection is created in `app/database.py`.
+- Models are defined in `app/models.py`.
+
 ## Testing API in Postman:
 This API can be tested in Postman using the provided
 [`Postman collection file`](./f1_stats_api.postman_collection.json).
+
