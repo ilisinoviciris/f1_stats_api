@@ -23,4 +23,4 @@ The API will be available at: http://localhost:8000/
 
 ## Testing API in Postman:
 This API can be tested in Postman using the provided
-[`Postman collection file`](./f1_stats_api.postman_collection.json)
+[`Postman collection file`](./f1_stats_api.postman_collection.json).
