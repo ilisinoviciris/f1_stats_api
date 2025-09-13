@@ -14,7 +14,7 @@ def get_db():
     finally:
         db.close()
 
-# endpoint for fetching all drivers -> GET /drivers
+# endpoint for retrieving all drivers -> GET /drivers/
 @router.get("/", response_model=list[schemas.Driver])
 def get_all_drivers(db: Session = Depends(get_db)):
     try:
@@ -25,7 +25,7 @@ def get_all_drivers(db: Session = Depends(get_db)):
             detail=f"Unexpected error: {str(e)}"
         )
 
-# endpoint for fetching a driver by id -> GET /drivers/{driver_id}
+# endpoint for retrieving a driver by id -> GET /drivers/{driver_id}
 @router.get("/{driver_id}", response_model=schemas.Driver)
 def get_driver(driver_id: str, db: Session = Depends(get_db)):
     driver = driver_repository.get_driver_by_driver_id(db=db, driver_id=driver_id)
@@ -36,7 +36,7 @@ def get_driver(driver_id: str, db: Session = Depends(get_db)):
         )
     return driver
 
-# enpoint for creating a new driver -> POST /drivers
+# endpoint for creating a new driver -> POST /drivers/
 @router.post("/", response_model=schemas.Driver)
 def create_driver(driver: schemas.DriverCreate, db: Session = Depends(get_db)):
     try:
