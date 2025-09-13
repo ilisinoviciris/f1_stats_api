@@ -7,6 +7,10 @@ This project is built for learning purposes with a goal of practicing backend de
 ## Features of this project:
 - `GET /` -> Root endpoint
 - `GET /healthz` -> Health check endpoint
+- `GET /drivers/ ` -> Retrieve all drivers
+- `GET /drivers/{driver_id} ` -> Retrieve a driver by driver_id
+- `POST /drivers/` -> Add a new driver
+
 
 ## How to install this project:
 1. Create and activate virtual environment:
