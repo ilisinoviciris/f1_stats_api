@@ -13,4 +13,5 @@ class Driver(Base):
     last_name = Column(String, nullable=False)
     driver_number = Column(Integer, nullable=False)
     name_acronym = Column(String, nullable=False)
+    team_name = Column(String, nullable=False)
 
