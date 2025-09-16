@@ -7,6 +7,8 @@ app = FastAPI()
 
 models.Base.metadata.create_all(bind=engine)
 
+# add drivers router
+app.include_router(drivers.router)
 
 # root
 @app.get("/")
@@ -18,5 +20,4 @@ def root():
 def health():
     return {"status": "OK"}
 
-# add drivers router
-app.include_router(drivers.router)
+

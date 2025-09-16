@@ -1,21 +1,33 @@
 from pydantic import BaseModel
+from typing import Optional
 
-# main driver statistics
+# fields for Driver
 class DriverBase(BaseModel):
-    driver_id: str
-    first_name: str
-    last_name: str
+    full_name: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     driver_number: int
-    name_acronym: str
-    team_name: str
+    name_acronym: Optional[str] = None
+    team_name: Optional[str] = None
+    country_code: Optional[str] = None
 
-# request body
+# fields to create a new driver
 class DriverCreate(DriverBase):
-    pass
+    driver_id: str
 
-# response body
+# fields for updating a driver (all fields are optional)
+class DriverUpdate(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    driver_number: Optional[int] = None
+    name_acronym: Optional[str] = None
+    team_name: Optional[str] = None
+    country_code: Optional[str] = None  
+
+# fields returned
 class Driver(DriverBase):
-    id: int
+    driver_id: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
