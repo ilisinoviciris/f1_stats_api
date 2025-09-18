@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-from .. import models, schemas
-import httpx
+from app import models, schemas
 
 # return all drivers from the database
 def get_all_drivers(db: Session):
