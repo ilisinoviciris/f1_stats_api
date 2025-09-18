@@ -2,6 +2,7 @@
 
 from sqlalchemy import Column, String, Integer
 from app.database import Base
+from app.models import Base
 
 # SQLAlchemy model for storing F1 races. 
 # Each race is uniquely identified by race_id 

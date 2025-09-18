@@ -2,6 +2,7 @@
 
 from sqlalchemy import Column, String, Integer
 from app.database import Base
+from app.models import Base
 
 # SQLAlchemy model for storing F1 drivers. 
 # Each driver is uniquely identified by driver_id -> firstname_lastname. 
