@@ -19,3 +19,14 @@ class Driver(Base):
     team_name = Column(String, nullable=True)
     country_code = Column(String, nullable=True)
 
+class Race(Base):
+    __tablename__ = "races"
+
+    race_id = Column(Integer, primary_key=True, index=True)
+    race_name = Column(String, index=True)
+    circuit_name = Column(String, index=True)
+    location = Column(String, index=True)
+    country_name = Column(String, index=True)
+    year = Column(Integer, index=True)
+
+
