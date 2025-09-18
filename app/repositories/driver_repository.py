@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-from app import models, schemas
+from app import models
+from app.schemas import DriverCreate, DriverUpdate
 
 # return all drivers from the database
 def get_all_drivers(db: Session):
@@ -17,7 +18,7 @@ def get_driver_by_driver_id(db: Session, driver_id: str):
     return driver
 
 # create a new driver in the database (if driver_id doesn't already exist)
-def create_driver(db: Session, driver: schemas.DriverCreate):
+def create_driver(db: Session, driver: DriverCreate):
     driver_exists = db.query(models.Driver).filter(models.Driver.driver_id == driver.driver_id).first()
     if driver_exists:
         raise HTTPException(
@@ -32,8 +33,8 @@ def create_driver(db: Session, driver: schemas.DriverCreate):
     return db_driver
 
 # update a driver
-def update_driver(db: Session, driver_id: str, driver_update: schemas.DriverUpdate):
-    driver_exists = db.query(models.Driver).filter(models.Driver.driver_id == driver_id).first()
+def update_driver(db: Session, driver_id: str, driver_update: DriverUpdate):
+    driver_exists = db.query(models.river).filter(models.Driver.driver_id == driver_id).first()
     if not driver_exists:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 

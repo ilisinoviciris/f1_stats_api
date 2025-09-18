@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
-from app import models, schemas, database
+from app import database, models, schemas
 from app.repositories import driver_repository
 import httpx
 from app.utils import normalize_driver_id
