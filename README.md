@@ -2,7 +2,7 @@
 
 ## A learning project that demonstrates how to build a REST API with FastAPI.
 
-This project is built for learning purposes with a goal of practicing backend development, data engineering basics, and containerization (Docker).
+This project is built for learning purposes with a goal of practicing backend development, data engineering basics and containerization (Docker).
 
 ## Features of this project:
 - `GET /` -> Root endpoint
@@ -14,12 +14,13 @@ This project is built for learning purposes with a goal of practicing backend de
 - `DELETE /drivers/{driver_id}` -> Delete a driver
 - `POST /drivers/sync` -> Fetch drivers from OpenF1 API and store/update in local database
 
-## Changes and improvments:
-- Fetches all drivers from the OpenF1 API and saves/updates the database.
-- Database model (`app/models.py`) is updated: added `driver_id` as primary_key, `id` is removed.
-- `driver_id` is generated from `full_name` -> transformed in all lowercase and underscore instead of a space for ex. "Charles LECLERC" to "charles_leclerc".
-- Implemented fallback rule for `country_code` -> if not available, search all records for the same driver and get the value if it exists.
-- Added error handling with **HTTPException** messages.
+## Project highlights:
+- Drivers are fetched directly directly from OpenF1 API and stored/updated locally.
+- Database model (`app/models.py`) uses `driver_id` as the primary_key (generated from `full_name` e.g. `"Charles LECLERC"` to `"charles_leclerc"`).
+- `country_code` is handled with a fallback rule: if missing in one record, it is searched across all entries for that driver.
+- Centralized **exception handling** is added in `main.py` for database errors, external API errors and unexpected server errors.
+- **Logging** is enabled across the project to capture errors and debug information.
+- **Automated tests** are included (`tests/test_drivers.py`) to validate driver endpoints in addition to Postman testing.
 
 ## How to install this project:
 1. Create and activate virtual environment:
@@ -42,8 +43,12 @@ The database file `f1_stats.db` will be created automatically in project root wh
 - Models are defined in `app/models.py`.
 
 ## Testing API in Postman:
-This API can be tested in Postman using the provided
-[`Postman collection file`](./f1_stats_api.postman_collection.json).
+This API can be tested in two ways:
+1. Using the [`Postman collection file`](./f1_stats_api.postman_collection.json).
+2. Running automated tests with **pytest**:
+    ```bash
+    pytest -v
+    ```
 
 ### Example requests:
 
