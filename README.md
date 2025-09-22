@@ -7,6 +7,8 @@ This project is built for learning purposes with a goal of practicing backend de
 ## Features of this project:
 - `GET /` -> Root endpoint
 - `GET /healthz` -> Health check endpoint
+
+### Drivers
 - `POST /drivers/` -> Add a new driver
 - `GET /drivers/ ` -> Retrieve all drivers
 - `GET /drivers/{driver_id}` -> Retrieve a driver by driver_id
@@ -14,13 +16,21 @@ This project is built for learning purposes with a goal of practicing backend de
 - `DELETE /drivers/{driver_id}` -> Delete a driver
 - `POST /drivers/sync` -> Fetch drivers from OpenF1 API and store/update in local database
 
+### Races
+- `POST /races/` -> Add a new race
+- `GET /races/ ` -> Retrieve all races
+- `GET /races/{race_id}` -> Retrieve a race by race_id
+- `PUT /racess/{race_id}` -> Update race information
+- `DELETE /races/{race_id}` -> Delete a race
+- `POST /races/sync` -> Fetch races from OpenF1 API and store/update in local database
+
 ## Project highlights:
 - Drivers are fetched directly directly from OpenF1 API and stored/updated locally.
 - Database model (`app/models.py`) uses `driver_id` as the primary_key (generated from `full_name` e.g. `"Charles LECLERC"` to `"charles_leclerc"`).
 - `country_code` is handled with a fallback rule: if missing in one record, it is searched across all entries for that driver.
 - Centralized **exception handling** is added in `main.py` for database errors, external API errors and unexpected server errors.
 - **Logging** is enabled across the project to capture errors and debug information.
-- **Automated tests** are included (`tests/test_drivers.py`) to validate driver endpoints in addition to Postman testing.
+- **Automated tests** are included (`tests/test_drivers.py`, `tests/test_races.py`) to validate driver, race endpoints in addition to Postman testing.
 
 ## How to install this project:
 1. Create and activate virtual environment:
@@ -42,7 +52,7 @@ The database file `f1_stats.db` will be created automatically in project root wh
 - Database connection is created in `app/database.py`.
 - Models are defined in `app/models.py`.
 
-## Testing API in Postman:
+## Testing API:
 This API can be tested in two ways:
 1. Using the [`Postman collection file`](./f1_stats_api.postman_collection.json).
 2. Running automated tests with **pytest**:
@@ -89,7 +99,30 @@ This API can be tested in two ways:
 ```json
 {
     "created": 84,
-    "updated": 2389,
-    "total": 2343
+    "updated": 6304,
+    "total": 6388
+}
+```
+
+#### 5. Get all races
+`GET /races/`
+```json
+{
+    "race_id": 1140,
+    "race_name": "Pre-Season Testing",
+    "circuit_name": "Sakhir",
+    "location": "Sakhir",
+    "country_name": "Bahrain",
+    "year": 2023
+}
+```
+
+#### 6. Sync races from OpenF1 API
+`POST /races/sync`
+```json
+{
+    "created": 65,
+    "updated": 0,
+    "total": 65
 }
 ```
