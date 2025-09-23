@@ -13,6 +13,7 @@ class Lap(Base):
 
     lap_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     race_id = Column(Integer, ForeignKey("races.race_id"), nullable=False, index=True)
+    session_id = Column(Integer, ForeignKey("sessions.session_id"), nullable=False, index=True)
     driver_number = Column(Integer, nullable=True)
     lap_number = Column(Integer, nullable=True)
     lap_duration = Column(Float, nullable=True)
@@ -23,6 +24,4 @@ class Lap(Base):
     i2_speed = Column(Float, nullable=True)
     st_speed = Column(Float, nullable=True)
     is_pit_out_lap = Column(Boolean, default=False)
-    session_id = Column(Integer, nullable=True)
-    session_name = Column(String, nullable=True)
-    session_type = Column(String, nullable=True)
+    
