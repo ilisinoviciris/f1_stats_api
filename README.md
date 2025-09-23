@@ -24,13 +24,28 @@ This project is built for learning purposes with a goal of practicing backend de
 - `DELETE /races/{race_id}` -> Delete a race
 - `POST /races/sync` -> Fetch races from OpenF1 API and store/update in local database
 
+### Sessions
+- `POST /sessions/` -> Add a new session
+- `GET /sessions/ ` -> Retrieve all sessions
+- `GET /sessions/{id}` -> Retrieve a session by id
+- `PUT /sessions/{id}` -> Update session information
+- `DELETE /sessions/{id}` -> Delete a session
+
+### Laps
+- `POST /laps/` -> Add a new lap
+- `GET /laps/ ` -> Retrieve all laps
+- `GET /laps/{lap_id}` -> Retrieve a session by session_id
+- `PUT /laps/{lap_id}` -> Update lap information
+- `DELETE /laps/{lap_id}` -> Delete a lap
+
 ## Project highlights:
 - Drivers are fetched directly directly from OpenF1 API and stored/updated locally.
 - Database model (`app/models.py`) uses `driver_id` as the primary_key (generated from `full_name` e.g. `"Charles LECLERC"` to `"charles_leclerc"`).
 - `country_code` is handled with a fallback rule: if missing in one record, it is searched across all entries for that driver.
 - Centralized **exception handling** is added in `main.py` for database errors, external API errors and unexpected server errors.
 - **Logging** is enabled across the project to capture errors and debug information.
-- **Automated tests** are included (`tests/test_drivers.py`, `tests/test_races.py`) to validate driver, race endpoints in addition to Postman testing.
+- **Automated tests** are included (`tests/test_drivers.py`, `tests/test_races.py`, `tests/test_sessions.py`, `tests/test_laps.py`) to validate driver, race, session and lap endpoints in addition to Postman testing.
+- **Scripts** that fetch and store all sessions and laps into the database are included (`scripts/sync_all_sessions.py`, `scripts/sync_all_laps.py`).
 
 ## How to install this project:
 1. Create and activate virtual environment:
@@ -126,3 +141,25 @@ This API can be tested in two ways:
     "total": 65
 }
 ```
+
+## Sync scripts:
+This project uses helper **scripts** that fetch and store large amount of data from sessions and laps directly into the database. They are located in folder `scripts/`.
+
+### Available scripts:
+- `scripts/sync_all_sessions.py` -> fetches all sessions for all races stored in the database.
+- `scripts/sync_all_laps.py` -> fetches all laps for all races stored in the database.
+
+### How to run:
+From project root:
+```bash
+python -m scripts.sync_all_sessions
+python -m scripts.sync_all_laps
+```
+
+### Example output:
+```bash
+Found 66 races in database.
+Fetching sessions for race_id=1250 (Las Vegas Grand Prix)
+race_id=1250: 5 created, 0 updated, total=5
+```
+
