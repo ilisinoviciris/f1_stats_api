@@ -37,6 +37,7 @@ def sync_all_laps():
 
                 lap_data = schemas.LapCreate(
                     race_id = race_id,
+                    session_id = l.get("session_key"),
                     driver_number = l.get("driver_number"),
                     lap_number = l.get("lap_number"),
                     lap_duration = l.get("lap_duration", 0),
@@ -46,10 +47,7 @@ def sync_all_laps():
                     i1_speed = l.get("i1_speed", 0),
                     i2_speed = l.get("i2_speed", 0),
                     st_speed = l.get("st_speed", 0),
-                    is_pit_out_lap = l.get("is_pit_out_lap", False),
-                    session_id = l.get("session_key"),
-                    session_name = l.get("session_name") or "",
-                    session_type = l.get("session_type") or ""
+                    is_pit_out_lap = l.get("is_pit_out_lap", False)
                 ) 
 
                 lap_exists = db.query(models.Lap).filter(
