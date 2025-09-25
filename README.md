@@ -30,6 +30,15 @@ This project is built for learning purposes with a goal of practicing backend de
 - `GET /sessions/{id}` -> Retrieve a session by id
 - `PUT /sessions/{id}` -> Update session information
 - `DELETE /sessions/{id}` -> Delete a session
+- `POST /sessions/{race_id}` -> Fetch all sessions by race_id from OpenF1 API and store/update in local database
+
+### Stints
+- `POST /stints/` -> Add a new stint
+- `GET /stints/ ` -> Retrieve all stints
+- `GET /stints/{stint_id}` -> Retrieve a stint by stint_id
+- `PUT /stints/{stint_id}` -> Update stint information
+- `DELETE /stints/{stint_id}` -> Delete a stint
+- `POST /stints/{race_id}` -> Fetch all stints by race_id from OpenF1 API and store/update in local database
 
 ### Laps
 - `POST /laps/` -> Add a new lap
@@ -37,6 +46,7 @@ This project is built for learning purposes with a goal of practicing backend de
 - `GET /laps/{lap_id}` -> Retrieve a session by session_id
 - `PUT /laps/{lap_id}` -> Update lap information
 - `DELETE /laps/{lap_id}` -> Delete a lap
+- `POST /laps/{race_id}` -> Fetch all laps by race_id from OpenF1 API and store/update in local database
 
 ## Project highlights:
 - Drivers are fetched directly directly from OpenF1 API and stored/updated locally.
@@ -45,7 +55,7 @@ This project is built for learning purposes with a goal of practicing backend de
 - Centralized **exception handling** is added in `main.py` for database errors, external API errors and unexpected server errors.
 - **Logging** is enabled across the project to capture errors and debug information.
 - **Automated tests** are included (`tests/test_drivers.py`, `tests/test_races.py`, `tests/test_sessions.py`, `tests/test_laps.py`) to validate driver, race, session and lap endpoints in addition to Postman testing.
-- **Scripts** that fetch and store all sessions and laps into the database are included (`scripts/sync_all_sessions.py`, `scripts/sync_all_laps.py`).
+- **Scripts** that fetch and store all sessions and laps into the database are included (`scripts/sync_all_sessions.py`, `scripts/sync_all_laps.py`, `scripts/sync_all_stints`).
 
 ## How to install this project:
 1. Create and activate virtual environment:
@@ -60,12 +70,15 @@ This project is built for learning purposes with a goal of practicing backend de
     ```
 The API will be available at: http://localhost:8000/
 
-## Database setup:
+## Project setup:
 This project uses **SQLite** as the database (for now).
 The database file `f1_stats.db` will be created automatically in project root when the app is started.
 - SQLAlchemy is used as the ORM.
 - Database connection is created in `app/database.py`.
-- Models are defined in `app/models.py`.
+- `app/models` -> contains SQLAlchemy database models, each representing a database table.
+- `app/schemas` -> contains Pydantic schemas used for request validation and response formatting.
+- `app/repositories` -> contains repository functions that handle database operations.
+- `app/routers` -> contains API endpoints (routes) defined with FastAPI, connected to repositories and schemas.
 
 ## Testing API:
 This API can be tested in two ways:
