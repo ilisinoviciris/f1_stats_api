@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import JSONResponse
 from app.database import Base, engine
 from app import models
-from app.routers import drivers, races, sessions, laps
+from app.routers import drivers, races, sessions, laps, stints
 import httpx
 from sqlalchemy.exc import SQLAlchemyError
 import logging
@@ -28,6 +28,9 @@ app.include_router(laps.router)
 
 # add sessions router
 app.include_router(sessions.router)
+
+# add stints router
+app.include_router(stints.router)
 
 # root
 @app.get("/")
