@@ -156,23 +156,41 @@ This API can be tested in two ways:
 ```
 
 ## Sync scripts:
-This project uses helper **scripts** that fetch and store large amount of data from sessions and laps directly into the database. They are located in folder `scripts/`.
+This project uses helper **scripts** that fetch and store large amount of data from sessions, stints and laps directly into the database. They are located in folder `scripts/`.
 
 ### Available scripts:
 - `scripts/sync_all_sessions.py` -> fetches all sessions for all races stored in the database.
+- `scripts/sync_all_stints.py` -> fetches all stints for all races stored in the database.
 - `scripts/sync_all_laps.py` -> fetches all laps for all races stored in the database.
 
-### How to run:
+#### How to run:
 From project root:
 ```bash
 python -m scripts.sync_all_sessions
+python -m scripts.sync_all_stints
 python -m scripts.sync_all_laps
 ```
 
-### Example output:
+#### Example output:
 ```bash
 Found 66 races in database.
 Fetching sessions for race_id=1250 (Las Vegas Grand Prix)
 race_id=1250: 5 created, 0 updated, total=5
 ```
 
+### Export dataset
+After syncing data, you can export the cleaned dataset into a .csv file for Machine Learning training:
+```bash
+python -m scripts.export_laps
+```
+
+## Machine Learning
+This project includes a **Machine Learning** module for analyzing and predicting race pace evolution from created dataset (`laps_dataset.csv`).
+
+### First model: Linear Regression model
+- Training of a **Linear Regression** baseline model to predict lap time (lap_duration).
+- Evaluation with metrics: R2, MAE, MSE, RMSE.
+- Saving artifacts:
+    - trained models
+    - evaluation metrics
+    - visualizations
