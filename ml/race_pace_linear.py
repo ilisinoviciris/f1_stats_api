@@ -103,19 +103,17 @@ def print_coefficients(model, num_attribs, cat_attribs):
         print(f"{name}:{coef}")
 
 # visualizing predictions with matplotlib
-def plot_scatter_predictions(y_test, y_pred, plot_dir):
+def plot_scatter_predictions(y_test, y_pred):
     """Scatter plot: prediction vs actual results."""
     fig, ax = plt.subplots(figsize=(8,6))
     ax.scatter(y_test, y_pred, alpha=0.5, color="blue", edgecolors="k")
-    ax.plot([y_test.min(),y_test.max()], [y_test.min(), y_test.max()], color="r", lw=1.5)
+    ax.plot([y_test.min(),y_test.max()], [y_test.min(), y_test.max()], color="red", lw=1.5)
 
     ax.set_xlabel("Actual Lap Time")
     ax.set_ylabel("Predicted Lap Duration")
     ax.set_title("Linear regression: Predicted vs Actual Lap Times")
     
-    plot_path = plot_dir / "scatter_plot.png"
-    plt.savefig(plot_path)
-    plt.close(fig)
+    return fig
 
 def main():
     df = load_data()
@@ -128,11 +126,12 @@ def main():
 
     print_coefficients(model, num_attribs, cat_attribs)
 
-    utils.save_model(model, "race_pace_linear")
-    utils.save_metrics(metrics, "race_pace_linear")
+    model_name = "race_pace_linear"
+    utils.save_model(model, model_name)
+    utils.save_metrics(metrics, model_name)
 
-    plot_dir = utils.create_plot_dir("race_pace_linear")
-    plot_scatter_predictions(y_test, y_pred, plot_dir)
+    fig = plot_scatter_predictions(y_test, y_pred)
+    utils.save_plot(fig, model_name, "scatter_plot.png")
 
 if __name__ == "__main__":
     main()
