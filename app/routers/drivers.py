@@ -4,7 +4,7 @@ from typing import List
 from app import database, models, schemas
 from app.repositories import driver_repository
 import httpx
-from app.utils import normalize_driver_id
+from app.utils import normalize_driver_id, normalize_full_name
 
 # initializing router 
 router = APIRouter(prefix="/drivers", tags=["Drivers"])
@@ -70,22 +70,28 @@ def fetch_drivers(db: Session = Depends(get_db)):
     updated = 0
 
     for d in drivers_json:
-        full_name = d.get("full_name", "")
-        driver_id = normalize_driver_id(full_name)
+        # full_name from OpenF1 used ONLY for generating driver_id
+        openf1_full_name = d.get("full_name", "").strip()
+        driver_id = normalize_driver_id(openf1_full_name)
 
+        # use function to normalize full_name (only first letters of every word and after apostrophe are capitalized)
+        clean_full_name = normalize_full_name(openf1_full_name)
+
+        # if country_code is not fetched iterate through all entries 
         country_code = d.get("country_code")
         if not country_code:
             for entry in drivers_json:
                 if normalize_driver_id(entry.get("full_name")) == driver_id and entry.get("country_code"):
                     country_code = entry.get("country_code")
                     break
-
+        
+        # if country_code is not found in any of the entries for driver then leave it empty
         if not country_code:
             country_code = ""       
 
         driver_data = schemas.DriverCreate(
             driver_id = driver_id,
-            full_name = full_name,
+            full_name = clean_full_name,
             first_name = d.get("first_name") or "",
             last_name = d.get("last_name") or "",
             driver_number = d.get("driver_number", 0),
@@ -101,6 +107,7 @@ def fetch_drivers(db: Session = Depends(get_db)):
             for field, value in update_data.items():
                 if value is not None:
                     setattr(driver_exists, field, value)
+
             db.commit()
             db.refresh(driver_exists)
             updated += 1
