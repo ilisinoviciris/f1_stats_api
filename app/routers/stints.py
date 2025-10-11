@@ -74,6 +74,7 @@ def fetch_stints(race_id: int, db: Session = Depends(get_db)):
         lap_start = s.get("lap_start")
         lap_end = s.get("lap_end")
         tyre_compound = s.get("compound")
+        tyre_age_at_start = s.get("tyre_age_at_start")
 
         stint_data = schemas.StintCreate(
             race_id = race_id,
@@ -82,7 +83,8 @@ def fetch_stints(race_id: int, db: Session = Depends(get_db)):
             stint_number = stint_number,
             lap_start = lap_start,
             lap_end = lap_end,
-            tyre_compound = tyre_compound
+            tyre_compound = tyre_compound,
+            tyre_age_at_start = tyre_age_at_start
         )
 
         stint_exists = db.query(models.Stint).filter(

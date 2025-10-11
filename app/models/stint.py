@@ -15,3 +15,4 @@ class Stint(Base):
     lap_start = Column(Integer, nullable=True)
     lap_end = Column(Integer, nullable=True)
     tyre_compound = Column(String, nullable=True)
+    tyre_age_at_start = Column(Integer, nullable=True)

@@ -39,7 +39,8 @@ def sync_all_stints():
                     stint_number = s.get("stint_number"),
                     lap_start = s.get("lap_start"),
                     lap_end = s.get("lap_end"),
-                    tyre_compound = s.get("compound")
+                    tyre_compound = s.get("compound"),
+                    tyre_age_at_start = s.get("tyre_age_at_start")
                 ) 
 
                 stint_exists = db.query(models.Stint).filter(

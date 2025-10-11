@@ -10,6 +10,7 @@ class StintBase(BaseModel):
     lap_start: Optional[int] = None
     lap_end: Optional[int] = None
     tyre_compound: Optional[str] = None
+    tyre_age_at_start: Optional[int] = None
 
 class StintCreate(StintBase):
     pass
@@ -18,6 +19,7 @@ class StintUpdate(BaseModel):
     lap_start: Optional[int] = None
     lap_end: Optional[int] = None
     tyre_compound: Optional[str] = None
+    tyre_age_at_start: Optional[int] = None
 
 class Stint(StintBase):
     stint_id: int
