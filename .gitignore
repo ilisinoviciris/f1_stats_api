@@ -8,3 +8,4 @@ f1_stats.db
 *.pkl
 *.json
 *.png
+data/fastf1_cache
