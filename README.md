@@ -194,3 +194,7 @@ This project includes a **Machine Learning** module for analyzing and predicting
     - trained models
     - evaluation metrics
     - visualizations
+
+## Test merge: local database (containing data from ONLY OpenF1) + FastF1 
+This script compares lap data from **OpenF1 API** stored in project's local database with lap data from python library FastF1.
+It merges laps + sessions + races + drivers and compares lap duration from both data sources.
