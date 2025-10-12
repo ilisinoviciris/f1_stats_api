@@ -24,4 +24,6 @@ class Lap(Base):
     i2_speed = Column(Float, nullable=True)
     st_speed = Column(Float, nullable=True)
     is_pit_out_lap = Column(Boolean, default=False)
+
+    # from FastF1 library
     
