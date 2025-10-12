@@ -5,3 +5,6 @@ __pycache__/
 .env
 f1_stats.db
 *.csv
+*.pkl
+*.json
+*.png
