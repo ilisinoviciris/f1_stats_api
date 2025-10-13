@@ -26,4 +26,6 @@ class Lap(Base):
     is_pit_out_lap = Column(Boolean, default=False)
 
     # from FastF1 library
-    
+    pit_in_time = Column(Float, nullable=True)
+    pit_out_time = Column(Float, nullable=True)
+    track_status = Column(String, nullable=True)

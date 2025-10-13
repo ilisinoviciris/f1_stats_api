@@ -15,6 +15,9 @@ class LapBase(BaseModel):
     i2_speed: Optional[float] = None
     st_speed: Optional[float] = None
     is_pit_out_lap: Optional[bool] = None
+    pit_in_time: Optional[float] = None
+    pit_out_time: Optional[float] = None
+    track_status: Optional[str] = None
 
 # fields to create a new lap
 class LapCreate(LapBase):
@@ -30,6 +33,9 @@ class LapUpdate(BaseModel):
     i2_speed: Optional[float] = None
     st_speed: Optional[float] = None
     is_pit_out_lap: Optional[bool] = None
+    pit_in_time: Optional[float] = None
+    pit_out_time: Optional[float] = None
+    track_status: Optional[str] = None
 
 # fields returned
 class Lap(LapBase):
