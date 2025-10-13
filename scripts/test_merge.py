@@ -31,7 +31,7 @@ def orm_to_df(data):
     df = pd.DataFrame([row.__dict__ for row in data])
     return df.drop(columns=["_sa_instance_state"], errors="ignore")
 
-# load tables from ORM
+# load tables via ORM
 laps_df = orm_to_df(db.query(models.Lap).all())
 sessions_df = orm_to_df(db.query(models.Session).all())
 races_df = orm_to_df(db.query(models.Race).all())
