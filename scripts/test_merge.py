@@ -1,3 +1,9 @@
+"""
+Test merge between OpenF1 and FastF1 data.
+"""
+
+from app import database, models
+from sqlalchemy.orm import Session
 import pandas as pd
 import fastf1
 from pathlib import Path
@@ -19,13 +25,19 @@ SESSION_MAPPING = {
     "Sprint Shootout": "Sprint Shootout"
 }
 
-# load tables from local database containing data from OpenF1
-engine = create_engine("sqlite:///f1_stats.db")
+db: Session = database.SessionLocal()
 
-laps_df = pd.read_sql("SELECT * FROM laps", engine)
-sessions_df = pd.read_sql("SELECT * FROM sessions", engine)
-races_df = pd.read_sql("SELECT * FROM races", engine)
-drivers_df = pd.read_sql("SELECT * FROM drivers", engine)
+def orm_to_df(data):
+    df = pd.DataFrame([row.__dict__ for row in data])
+    return df.drop(columns=["_sa_instance_state"], errors="ignore")
+
+# load tables from ORM
+laps_df = orm_to_df(db.query(models.Lap).all())
+sessions_df = orm_to_df(db.query(models.Session).all())
+races_df = orm_to_df(db.query(models.Race).all())
+drivers_df = orm_to_df(db.query(models.Driver).all())
+
+db.close()
 
 # merge laps + sessions 
 laps_sessions_merged = laps_df.merge(sessions_df, on="session_id", how="left")
