@@ -46,9 +46,13 @@ def export_laps_to_csv(output_file: str = "laps_dataset.csv"):
                 models.Stint.stint_number,
                 (models.Lap.lap_number - models.Stint.lap_start + 1).label("stint_lap_number"),
                 models.Stint.tyre_compound,
+                models.Stint.tyre_age_at_start,
                 models.Lap.duration_sector_1,
                 models.Lap.duration_sector_2,
                 models.Lap.duration_sector_3,
+                models.Lap.pit_in_time,
+                models.Lap.pit_out_time,
+                models.Lap.track_status,
                 models.Lap.lap_duration
             )
             .join(models.Race, models.Lap.race_id == models.Race.race_id)
@@ -76,9 +80,13 @@ def export_laps_to_csv(output_file: str = "laps_dataset.csv"):
             "stint_number",
             "stint_lap_number",
             "tyre_compound",
+            "tyre_age_at_start",
             "duration_sector_1",
             "duration_sector_2",
             "duration_sector_3",
+            "pit_in_time",
+            "pit_out_time",
+            "track_status",
             "lap_duration"
         ])
 
