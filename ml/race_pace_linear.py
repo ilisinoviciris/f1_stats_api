@@ -24,8 +24,8 @@ def prepare_data(df: pd.DataFrame):
     Seperate numerical and categorical attributes.
     Define predictors and target.
     """
-    num_attribs = ["lap_number", "stint_number", "stint_lap_number"]
-    cat_attribs = ["race_id", "driver_id", "tyre_compound"]
+    num_attribs = ["lap_number", "stint_number", "stint_lap_number", "tyre_age_at_start", "pit_in_time", "pit_out_time"]
+    cat_attribs = ["driver_id", "tyre_compound", "circuit_location", "session_name"]
     target = ["lap_duration"]
 
     X = df[num_attribs + cat_attribs]

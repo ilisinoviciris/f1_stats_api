@@ -23,8 +23,8 @@ def prepare_data(df: pd.DataFrame):
     Seperate numerical and categorical attributes.
     Define predictors and target.
     """
-    num_attribs = ["lap_number", "stint_number", "stint_lap_number"]
-    cat_attribs = ["race_id", "driver_id", "tyre_compound"]
+    num_attribs = ["lap_number", "stint_number", "stint_lap_number", "tyre_age_at_start", "pit_in_time", "pit_out_time"]
+    cat_attribs = ["driver_id", "tyre_compound", "circuit_location", "session_name"]
     target = ["lap_duration"]
 
     X = df[num_attribs + cat_attribs]
@@ -142,7 +142,7 @@ def main():
     utils.save_model(tuned_model, model_name)
     utils.save_metrics(metrics, model_name)
 
-    utils.plot_feature_importances(model, X, output_path="ml/plots/race_pace_random_forest_tuned/feature_importance_plot.png")
+    utils.plot_feature_importance(model, X, model_name="ml/plots/race_pace_random_forest_tuned/feature_importance_plot.png")
 
 if __name__ == "__main__":
     main()
