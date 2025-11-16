@@ -31,7 +31,7 @@ A learning project that demonstrates how to build a REST API with **FastAPI**, i
 - `GET /sessions/{id}` -> Retrieve a session by id
 - `PUT /sessions/{id}` -> Update session information
 - `DELETE /sessions/{id}` -> Delete a session
-- `POST /sessions/{race_id}` -> Fetch all sessions by race_id from OpenF1 API and store/update in local database
+- `POST /sessions/{race_id}` -> Fetch all sessions for a given race from OpenF1 API and store/update in local database
 
 #### Stints
 - `POST /stints/` -> Add a new stint
@@ -39,7 +39,7 @@ A learning project that demonstrates how to build a REST API with **FastAPI**, i
 - `GET /stints/{stint_id}` -> Retrieve a stint by stint_id
 - `PUT /stints/{stint_id}` -> Update stint information
 - `DELETE /stints/{stint_id}` -> Delete a stint
-- `POST /stints/{race_id}` -> Fetch all stints by race_id from OpenF1 API and store/update in local database
+- `POST /stints/{race_id}` -> Fetch all stints for a given race from OpenF1 API and store/update in local database
 
 #### Laps
 - `POST /laps/` -> Add a new lap
@@ -47,7 +47,14 @@ A learning project that demonstrates how to build a REST API with **FastAPI**, i
 - `GET /laps/{lap_id}` -> Retrieve a session by session_id
 - `PUT /laps/{lap_id}` -> Update lap information
 - `DELETE /laps/{lap_id}` -> Delete a lap
-- `POST /laps/{race_id}` -> Fetch all laps by race_id from OpenF1 API and store/update in local database
+- `POST /laps/{race_id}` -> Fetch all laps for a given race from OpenF1 API and store/update in local database
+
+#### Telemetry
+- `POST /telemetry/` -> Add a new telemetry
+- `GET /telemetry/ ` -> Retrieve all telemetry
+- `GET /telemetry/{telemetry_id}` -> Retrieve a session by session_id
+- `PUT /telemetry/{telemetry_id}` -> Update telemetry information
+- `DELETE /telemetry/{telemetry_id}` -> Delete a telemetry
 
 ## Testing API:
 This API can be tested in two ways:
@@ -175,7 +182,7 @@ This project uses helper **scripts** that fetch and store large amount of data f
 - `scripts/sync_all_laps.py` -> fetches all laps for all races stored in the database.
 - `scripts/test_merge.py` -> test merge for OpenF1 and FastF1 data.
 - `scripts/add_fastf1_laps_columns.py` -> adds new columns that will be synced from FastF1 to the existing table laps.
-- `scripts/sync_laps_from_fastf1.py` -> fetched and syncs new lap data from FastF1
+- `scripts/sync_laps_from_fastf1.py` -> fetches and syncs new lap data from FastF1.
 - `scripts/export_laps.py` -> exports dataset for ML.
 
 ## Machine Learning
