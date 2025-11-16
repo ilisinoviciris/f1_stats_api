@@ -20,7 +20,7 @@ SESSION_MAPPING = {
     "Sprint Qualifying": "Sprint Qualifying" # for 2024 and 2025 season
 }
 
-def sync_fastf1_data():
+def sync_laps_from_fastf1():
     """
     Fetches and syncs FastF1 data (pit_in_time, pit_out_time, track_status) to the already created table laps.
     """
@@ -68,7 +68,7 @@ def sync_fastf1_data():
 
                     updated_count = 0
 
-                    # itterate through every FastF1 lap and try to find the same one in local database
+                    # iterate through every FastF1 lap and try to find the same one in local database
                     for _, lap in fastf1_laps.iterrows():
                         driver_acronym = lap["driver"]
                         lap_number = int(lap["lap_number"])
@@ -102,4 +102,4 @@ def sync_fastf1_data():
         db.close()
 
 if __name__ == "__main__":
-    sync_fastf1_data()
+    sync_laps_from_fastf1()
