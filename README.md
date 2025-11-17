@@ -214,8 +214,8 @@ Saving artifacts for all models:
     - Test R2: 0.9247
 
 ### Third model: Tuned Random Forest model
-After the baseline Random Forest Regressor was trained, a tuned version was developed using hyperparameter optimization.
-Best hyperparameters:
+- After the baseline Random Forest Regressor was trained, a tuned version was developed using hyperparameter optimization.
+- Best hyperparameters:
     - n_estimators": 300,
     - min_samples_split": 2,
     - min_samples_leaf": 1,
