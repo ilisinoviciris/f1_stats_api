@@ -131,7 +131,7 @@ This API can be tested in two ways:
 }
 ```
 
-## Data integation:
+## Data integration:
 
 Data from **OpenF1** API (table drivers, races, sessions, stints and laps) and **FastF1** python library (additional lap data, telemetry is planned to be added) are merged and synchronized locally to produce a dataset for model training.
 
