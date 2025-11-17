@@ -216,11 +216,11 @@ Saving artifacts for all models:
 ### Third model: Tuned Random Forest model
 - After the baseline Random Forest Regressor was trained, a tuned version was developed using hyperparameter optimization.
 - Best hyperparameters:
-    - n_estimators": 300,
-    - min_samples_split": 2,
-    - min_samples_leaf": 1,
-    - max_features": "sqrt",
-    - max_depth": 30.
+    - n_estimators: 300,
+    - min_samples_split: 2,
+    - min_samples_leaf: 1,
+    - max_features: "sqrt",
+    - max_depth: 30.
 
 ## Next steps:
 - add telemetry and weather data
