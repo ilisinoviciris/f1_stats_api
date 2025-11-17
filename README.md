@@ -44,7 +44,7 @@ A learning project that demonstrates how to build a REST API with **FastAPI**, i
 #### Laps
 - `POST /laps/` -> Add a new lap
 - `GET /laps/ ` -> Retrieve all laps
-- `GET /laps/{lap_id}` -> Retrieve a session by session_id
+- `GET /laps/{lap_id}` -> Retrieve a lap by lap_id
 - `PUT /laps/{lap_id}` -> Update lap information
 - `DELETE /laps/{lap_id}` -> Delete a lap
 - `POST /laps/{race_id}` -> Fetch all laps for a given race from OpenF1 API and store/update in local database
@@ -52,7 +52,7 @@ A learning project that demonstrates how to build a REST API with **FastAPI**, i
 #### Telemetry
 - `POST /telemetry/` -> Add a new telemetry
 - `GET /telemetry/ ` -> Retrieve all telemetry
-- `GET /telemetry/{telemetry_id}` -> Retrieve a session by session_id
+- `GET /telemetry/{telemetry_id}` -> Retrieve a telemetry by telemetry_id
 - `PUT /telemetry/{telemetry_id}` -> Update telemetry information
 - `DELETE /telemetry/{telemetry_id}` -> Delete a telemetry
 
