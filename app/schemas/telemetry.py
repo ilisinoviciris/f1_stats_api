@@ -7,25 +7,23 @@ class TelemetryBase(BaseModel):
     session_id: int
     driver_number: int
     lap_number: int
-    speed_avg: Optional[float] = None
-    rpm_mean: Optional[float] = None
-    gear_mean: Optional[int] = None
-    throttle_mean: Optional[float] = None
+    avg_speed: Optional[float] = None
+    mean_rpm: Optional[float] = None
+    median_gear: Optional[int] = None
+    throttle_usage: Optional[float] = None
     brake_usage: Optional[float] = None
     drs_usage: Optional[int] = None
-    time: Optional[float] = None
 
 class TelemetryCreate(TelemetryBase):
     pass
 
 class TelemetryUpdate(BaseModel):
-    speed_avg: Optional[float] = None
-    rpm_mean: Optional[float] = None
-    gear_mean: Optional[int] = None
-    throttle_mean: Optional[float] = None
+    avg_speed: Optional[float] = None
+    mean_rpm: Optional[float] = None
+    median_gear: Optional[int] = None
+    throttle_usage: Optional[float] = None
     brake_usage: Optional[float] = None
     drs_usage: Optional[int] = None
-    time: Optional[float] = None
 
 class Telemetry(TelemetryBase):
     telemetry_id: int
