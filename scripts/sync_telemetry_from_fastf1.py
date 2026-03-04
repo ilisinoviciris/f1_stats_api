@@ -3,6 +3,7 @@ import pandas as pd
 from pathlib import Path
 from app import database, models
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 # enable cache directory
 cache_dir = Path("data/fastf1_cache")
@@ -120,10 +121,25 @@ def sync_telemetry_from_fastf1():
 
                 print(f"{openf1_session_name} - {fastf1_session_name}")
 
+                # for error logging
+                session_desc = f"{year} {race_name} - {openf1_session_name}/{fastf1_session_name}"
+
+                # load existing (driver_number, lap_number) keys for this session once
+                existing_keys = set(
+                    db.query(models.Telemetry.driver_number, models.Telemetry.lap_number)
+                    .filter(models.Telemetry.session_id == s.session_id)
+                    .all()
+                )
+
                 try:
                     # load FastF1 session by year, race name and session name
                     session = fastf1.get_session(year, race_name, fastf1_session_name)
                     session.load()
+
+                    if session.laps is None or session.laps.empty:
+                        print("FastF1 returned empty laps.")
+                        continue
+
                     fastf1_laps = session.laps.copy()
 
                     # skip sessions where FastF1 does not return lap data
@@ -139,6 +155,8 @@ def sync_telemetry_from_fastf1():
 
                         # iterate through laps in FastF1 for that driver
                         for _, lap in driver_laps.iterrows():
+                            if pd.isna(lap.get("LapNumber")):
+                                continue
                             lap_number = int(lap["LapNumber"]) 
 
                             # find the correspoding lap in the database
@@ -155,6 +173,11 @@ def sync_telemetry_from_fastf1():
                             if not db_lap:
                                 continue
                             
+                            # skip duplicates
+                            key =(db_lap.driver_number, db_lap.lap_number)
+                            if key in existing_keys:
+                                continue
+
                             # retrieve telemetry at lap level
                             try:
                                 lap_telemetry = lap.get_car_data()
@@ -186,11 +209,19 @@ def sync_telemetry_from_fastf1():
 
                             db.add(telemetry)
 
-                    db.commit()
-                    print("Telemetry synced.")
+                            # add key to existing keys
+                            existing_keys.add(key)
+
+                    try:
+                        db.commit()
+                        print("Telemetry synced.")
+                    except IntegrityError:
+                        db.rollback()
+                        print("Skipped duplicates.")
             
                 except Exception as e:
-                    print(f"Error loading {session}: {e}")
+                    print(f"Error loading {session_desc}: {e}")
+                    db.rollback()
                     continue
 
     finally:
