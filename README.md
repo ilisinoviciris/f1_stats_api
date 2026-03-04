@@ -189,7 +189,7 @@ This project uses helper **scripts** that fetch and store large amount of data f
 - `scripts/sync_telemetry_from_fastf1.py` -> fetches lap-level telemetry data from FastF1, aggregates telemetry metrics and stores them in the database (table telemetry).
 - `scripts/export_laps.py` -> exports dataset for ML.
 
-## Telemetry processing
+### Telemetry processing
 Telemetry data is retrieved from FastF1 car telemetry and aggregated per lap to reduce the size of the dataset while preserving important driving metrics.
 For each race and session stored in the database, the script loads the corresponding FastF1 session (with caching enabled).
 Testing events are skipped due to inconsistent FastF1 event mapping.
