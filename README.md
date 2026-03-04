@@ -133,7 +133,9 @@ This API can be tested in two ways:
 
 ## Data integration:
 
-Data from **OpenF1** API (table drivers, races, sessions, stints and laps) and **FastF1** python library (additional lap data, telemetry is planned to be added) are merged and synchronized locally to produce a dataset for model training.
+Data from **OpenF1** API (table drivers, races, sessions, stints and laps) and **FastF1** python library (additional lap data and telemetry) are merged and synchronized locally to produce a dataset for model training.
+
+Telemetry data is retrieved from FastF1 at lap level and aggregated into structured metrics that are stored in the telemetry table.
 
 ## How to install this project:
 1. Create and activate virtual environment:
@@ -154,7 +156,8 @@ Data from **OpenF1** API (table drivers, races, sessions, stints and laps) and *
     python -m scripts.sync_all_laps
     python -m scripts.test_merge
     python -m scripts.add_fastf1_laps_columns
-    python -m scripts.add_sync_laps_from_fastf1
+    python -m scripts.sync_laps_from_fastf1
+    python -m scripts.sync_telemetry_from_fastf1
     ```
 4. Export dataset for ML:
     ```bash 
@@ -177,13 +180,32 @@ The database file `f1_stats.db` will be created automatically in project root wh
 This project uses helper **scripts** that fetch and store large amount of data from sessions, stints and laps directly into the database. They are located in folder `scripts/`.
 
 #### Available scripts:
-- `scripts/sync_all_sessions.py` -> fetches all sessions for all races stored in the database.
-- `scripts/sync_all_stints.py` -> fetches all stints for all races stored in the database.
-- `scripts/sync_all_laps.py` -> fetches all laps for all races stored in the database.
+- `scripts/sync_all_sessions.py` -> fetches all sessions for all races and stores them in the database (table sessions).
+- `scripts/sync_all_stints.py` -> fetches all stints for all races and stores them in the database (table stints).
+- `scripts/sync_all_laps.py` -> fetches all laps for all races and stores them in the database (table laps).
 - `scripts/test_merge.py` -> test merge for OpenF1 and FastF1 data.
-- `scripts/add_fastf1_laps_columns.py` -> adds new columns that will be synced from FastF1 to the existing table laps.
-- `scripts/sync_laps_from_fastf1.py` -> fetches and syncs new lap data from FastF1.
+- `scripts/add_fastf1_laps_columns.py` -> adds new columns that will be fetched from FastF1 and stored to the existing table laps.
+- `scripts/sync_laps_from_fastf1.py` -> fetches new lap data from FastF1 and stores them in the database to the existing table laps.
+- `scripts/sync_telemetry_from_fastf1.py` -> fetches lap-level telemetry data from FastF1, aggregates telemetry metrics and stores them in the database (table telemetry).
 - `scripts/export_laps.py` -> exports dataset for ML.
+
+## Telemetry processing
+Telemetry data is retrieved from FastF1 car telemetry and aggregated per lap to reduce the size of the dataset while preserving important driving metrics.
+For each race and session stored in the database, the script loads the corresponding FastF1 session (with caching enabled).
+Testing events are skipped due to inconsistent FastF1 event mapping.
+For each driver and lap, car telemetry is fetched using lap.get_car_data().
+Telemetry is aggregated into lap-level features and stored in the telemetry table using the unique key:
+(race_id, session_id, driver_number, lap_number).
+
+Aggregated telemetry features include:
+- avg_speed -> average car speed during the lap (km/h)
+- mean_rpm -> average engine RPM during the lap
+- median_gear -> median gear used during the lap
+- throttle_usage -> percentage of telemetry samples with throttle > 0.1
+- brake_usage -> percentage of telemetry samples with braking (supports boolean and numeric brake signals)
+- drs_usage -> percentage of lap time with DRS enabled
+
+This aggregation allows telemetry data to be integrated with lap-level race data and used later for machine learning analysis.
 
 ## Machine Learning
 This project includes a **Machine Learning** module for analyzing and predicting race pace evolution from created dataset (`laps_dataset.csv`). The models are not finished and will be worked on more after adding more features.
@@ -223,7 +245,7 @@ Saving artifacts for all models:
     - max_depth: 30.
 
 ## Next steps:
-- add telemetry and weather data
+- add weather data
 - add feature engineering for race conditions
 - upgrade ML models 
 - migrate to PostgreSQL
