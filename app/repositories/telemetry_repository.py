@@ -22,7 +22,7 @@ def create_telemetry(db: Session, telemetry: schemas.TelemetryCreate):
         models.Telemetry.race_id == telemetry.race_id,
         models.Telemetry.session_id == telemetry.session_id,
         models.Telemetry.driver_number == telemetry.driver_number,
-        models.Telemetry.telemetry_number == telemetry.telemetry_number
+        models.Telemetry.lap_number == telemetry.lap_number
         ).first()
     if telemetry_exists:
         raise HTTPException(
