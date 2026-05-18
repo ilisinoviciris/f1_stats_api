@@ -4,3 +4,4 @@ from .lap import Lap, LapCreate, LapUpdate
 from .session import Session, SessionCreate, SessionUpdate
 from .stint import Stint, StintCreate, StintUpdate
 from .telemetry import Telemetry, TelemetryCreate, TelemetryUpdate
+from .weather import Weather, WeatherCreate, WeatherUpdate

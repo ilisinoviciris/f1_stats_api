@@ -8,5 +8,6 @@ from .lap import Lap
 from .session import Session
 from .stint import Stint
 from .telemetry import Telemetry
+from .weather import Weather
 
-__all__ = ["Driver", "Race", "Lap", "Session", "Stint", "Telemetry"]
+__all__ = ["Driver", "Race", "Lap", "Session", "Stint", "Telemetry", "Weather"]
