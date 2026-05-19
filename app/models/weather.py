@@ -1,6 +1,6 @@
 #SQLAlchemy ORM models
 
-from sqlalchemy import Column, Integer, Float, ForeignKey, UniqueConstraint
+from sqlalchemy import Column, Integer, Float, Boolean, ForeignKey, UniqueConstraint
 from app.database import Base
 from app.models import Base
 
@@ -14,7 +14,7 @@ class Weather(Base):
     air_temp = Column(Float, nullable=True)
     humidity = Column(Float, nullable=True)
     pressure = Column(Float, nullable=True)
-    rainfall = Column(Float, nullable=True)
+    rainfall = Column(Boolean, nullable=True)
     track_temp = Column(Float, nullable=True)
     wind_direction = Column(Float, nullable=True)
     wind_speed = Column(Float, nullable=True)

@@ -9,7 +9,7 @@ class WeatherBase(BaseModel):
     air_temp: Optional[float] = None
     humidity: Optional[float] = None
     pressure: Optional[float] = None
-    rainfall: Optional[float] = None
+    rainfall: Optional[bool] = None
     track_temp: Optional[float] = None
     wind_direction: Optional[float] = None
     wind_speed: Optional[float] = None
@@ -22,7 +22,7 @@ class WeatherUpdate(BaseModel):
     air_temp: Optional[float] = None
     humidity: Optional[float] = None
     pressure: Optional[float] = None
-    rainfall: Optional[float] = None
+    rainfall: Optional[bool] = None
     track_temp: Optional[float] = None
     wind_direction: Optional[float] = None
     wind_speed: Optional[float] = None
