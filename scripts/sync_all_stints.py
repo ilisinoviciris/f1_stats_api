@@ -1,4 +1,4 @@
-import httpx
+import httpx, time
 from sqlalchemy.orm import Session
 from app import database, models, schemas
 from app.repositories import stint_repository
@@ -63,6 +63,8 @@ def sync_all_stints():
                     created += 1
 
             print(f"race_id={race_id}: {created} created, {updated} updated, total={len(stints_json)}")
+
+            time.sleep(3)
 
             total_created += created
             total_updated += updated
