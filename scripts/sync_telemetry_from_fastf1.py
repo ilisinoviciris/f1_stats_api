@@ -93,6 +93,8 @@ def sync_telemetry_from_fastf1():
     """
     db: Session = database.SessionLocal()
 
+    total_created = 0
+
     try:
         # load all races from the database
         races = db.query(models.Race).all()
@@ -131,6 +133,8 @@ def sync_telemetry_from_fastf1():
                     .all()
                 )
 
+                created_count = 0
+
                 try:
                     # load FastF1 session by year, race name and session name
                     session = fastf1.get_session(year, race_name, fastf1_session_name)
@@ -147,74 +151,76 @@ def sync_telemetry_from_fastf1():
                         print("No laps in FastF1 for this session.")
                         continue
 
-                    for driver_acronym in fastf1_laps["Driver"].unique():
-                        driver_acronym = str(driver_acronym).upper()
+                    # iterate through laps in FastF1 for that driver
+                    for _, lap in fastf1_laps.iterrows():
+                        if pd.isna(lap.get("LapNumber")):
+                            continue
 
-                        # all laps for that driver
-                        driver_laps = fastf1_laps.pick_drivers(driver_acronym)
+                        if pd.isna(lap.get("DriverNumber")):
+                            continue
 
-                        # iterate through laps in FastF1 for that driver
-                        for _, lap in driver_laps.iterrows():
-                            if pd.isna(lap.get("LapNumber")):
-                                continue
-                            lap_number = int(lap["LapNumber"]) 
+                        lap_number = int(lap["LapNumber"])
+                        driver_number = int(lap["DriverNumber"])
 
-                            # find the correspoding lap in the database
-                            db_lap = (
-                                db.query(models.Lap)
-                                .select_from(models.Lap)
-                                .join(models.Driver, models.Lap.driver_number == models.Driver.driver_number)
-                                .filter(
-                                    models.Lap.session_id == s.session_id,
-                                    models.Driver.name_acronym == driver_acronym,
-                                    models.Lap.lap_number == lap_number                                
-                                ).first())
-
-                            if not db_lap:
-                                continue
-                            
-                            # skip duplicates
-                            key =(db_lap.driver_number, db_lap.lap_number)
-                            if key in existing_keys:
-                                continue
-
-                            # retrieve telemetry at lap level
-                            try:
-                                lap_telemetry = lap.get_car_data()
-                            except Exception:
-                                continue
-
-                            if lap_telemetry is None or lap_telemetry.empty:
-                                continue 
-
-                            # aggregate metrics into a dict
-                            aggregate = aggregate_lap_telemetry(lap_telemetry)
-                            if not aggregate:
-                                continue
-
-                            # create a Telemetry record in the database
-                            telemetry = models.Telemetry(
-                                race_id=db_lap.race_id,
-                                session_id=db_lap.session_id,
-                                lap_number=db_lap.lap_number,
-                                driver_number=db_lap.driver_number,
-
-                                avg_speed=aggregate["avg_speed"],
-                                mean_rpm=aggregate["mean_rpm"],
-                                median_gear=aggregate["median_gear"],
-                                throttle_usage=aggregate["throttle_usage"],
-                                brake_usage=aggregate["brake_usage"],
-                                drs_usage=aggregate["drs_usage"]
+                        # find corresponding lap in database
+                        db_lap = (
+                            db.query(models.Lap)
+                            .filter(
+                                models.Lap.session_id == s.session_id,
+                                models.Lap.driver_number == driver_number,
+                                models.Lap.lap_number == lap_number
                             )
+                            .first()
+                        )
+                        
+                        if not db_lap:
+                            continue
+                        
+                        # skip duplicates
+                        key =(db_lap.driver_number, db_lap.lap_number)
+                        if key in existing_keys:
+                            continue
 
-                            db.add(telemetry)
+                        # retrieve telemetry at lap level
+                        try:
+                            lap_telemetry = lap.get_car_data()
+                        except Exception:
+                            continue
 
-                            # add key to existing keys
-                            existing_keys.add(key)
+                        if lap_telemetry is None or lap_telemetry.empty:
+                            continue 
+
+                        # aggregate metrics into a dict
+                        aggregate = aggregate_lap_telemetry(lap_telemetry)
+                        if not aggregate:
+                            continue
+
+                        # create a Telemetry record in the database
+                        telemetry = models.Telemetry(
+                            race_id=db_lap.race_id,
+                            session_id=db_lap.session_id,
+                            lap_number=db_lap.lap_number,
+                            driver_number=db_lap.driver_number,
+
+                            avg_speed=aggregate["avg_speed"],
+                            mean_rpm=aggregate["mean_rpm"],
+                            median_gear=aggregate["median_gear"],
+                            throttle_usage=aggregate["throttle_usage"],
+                            brake_usage=aggregate["brake_usage"],
+                            drs_usage=aggregate["drs_usage"]
+                        )
+
+                        db.add(telemetry)
+
+                        # add key to existing keys
+                        existing_keys.add(key)
+
+                        created_count += 1
+                        total_created += 1
 
                     try:
                         db.commit()
-                        print("Telemetry synced.")
+                        print(f"Telemetry synced. Created={created_count}")
                     except IntegrityError:
                         db.rollback()
                         print("Skipped duplicates.")
@@ -223,6 +229,8 @@ def sync_telemetry_from_fastf1():
                     print(f"Error loading {session_desc}: {e}")
                     db.rollback()
                     continue
+
+        print(f"Total telemetry rows created: {total_created}")
 
     finally:
         db.close()
