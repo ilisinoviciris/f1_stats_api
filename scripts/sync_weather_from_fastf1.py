@@ -74,6 +74,8 @@ def sync_weather_from_fastf1():
     """
     db: Session = database.SessionLocal()
 
+    total_created = 0
+
     try:
         # load all races from the database
         races = db.query(models.Race).all()
@@ -119,6 +121,8 @@ def sync_weather_from_fastf1():
                     print("Weather already exists for this session.")
                     continue
 
+                created_count = 0
+
                 try:
                     # load FastF1 session by year, race name and session name
                     session = fastf1.get_session(year, race_name, fastf1_session_name)
@@ -152,9 +156,12 @@ def sync_weather_from_fastf1():
 
                     db.add(weather)
 
+                    created_count += 1
+                    total_created += 1
+
                     try:
                         db.commit()
-                        print("Weather synced.")
+                        print(f"Weather synced. Created={created_count}")
                     except IntegrityError:
                         db.rollback()
                         print("Skipped duplicates.")
@@ -163,6 +170,9 @@ def sync_weather_from_fastf1():
                     print(f"Error loading {session_desc}: {e}")
                     db.rollback()
                     continue
+        
+        print(f"Total weather rows created: {total_created}")
+
     finally:
         db.close()
 
