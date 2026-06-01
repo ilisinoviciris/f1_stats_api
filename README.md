@@ -218,7 +218,7 @@ The models currently use lap, stint, tyre, pit stop, driver, circuit and session
 - migrate from SQLite to PostgreSQL
 - add automated scheduled synchronization
 - add containerization with Docker
-- develop analytics visualizations and dashboards
+- develop a TypeScript-based dashboard for interactive Formula 1 analytics and visualizations
 - improve API endpoints for analytics and data exploration
 - experiment with predictive and comparison-based race analytics
 
