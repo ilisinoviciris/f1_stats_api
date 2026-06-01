@@ -5,58 +5,48 @@ An ongoing Formula 1 analytics and data engineering project focused on backend d
 
 The project demonstrates how to build a REST API with **FastAPI**, integrate external data sources (OpenF1 + FastF1), design relational database schemas and process telemetry and weather data for analytics and **ML** use cases.
 
+## Tech stack:
+
+### Backend & API
+- Python
+- FastAPI
+- SQLAlchemy
+- Pydantic
+
+### Data & Analytics
+- Pandas
+- NumPy
+- scikit-learn
+
+### Data Sources
+- OpenF1 API
+- FastF1
+
+### Database 
+- SQLite
+
+### Testing & Tools 
+- pytest
+- Postman
+
 ## Features:
 
-### API endpoints
-- `GET /` -> Root endpoint
-- `GET /healthz` -> Health check endpoint
+### Available API modules
+- Drivers
+- Races
+- Sessions
+- Stints
+- Laps
+- Telemetry
+- Weather
 
-#### Drivers
-- `POST /drivers/` -> Add a new driver
-- `GET /drivers/ ` -> Retrieve all drivers
-- `GET /drivers/{driver_id}` -> Retrieve a driver by driver_id
-- `PUT /drivers/{driver_id}` -> Update driver information
-- `DELETE /drivers/{driver_id}` -> Delete a driver
-- `POST /drivers/sync` -> Fetch drivers from OpenF1 API and store/update in local database
+The API supports CRUD operations, synchronization endpoints and analytics-related data retrieval.
 
-#### Races
-- `POST /races/` -> Add a new race
-- `GET /races/ ` -> Retrieve all races
-- `GET /races/{race_id}` -> Retrieve a race by race_id
-- `PUT /racess/{race_id}` -> Update race information
-- `DELETE /races/{race_id}` -> Delete a race
-- `POST /races/sync` -> Fetch races from OpenF1 API and store/update in local database
-
-#### Sessions
-- `POST /sessions/` -> Add a new session
-- `GET /sessions/ ` -> Retrieve all sessions
-- `GET /sessions/{id}` -> Retrieve a session by id
+#### Example endpoints
+- `GET /drivers/` -> Retrieve all drivers
 - `PUT /sessions/{id}` -> Update session information
-- `DELETE /sessions/{id}` -> Delete a session
-- `POST /sessions/{race_id}` -> Fetch all sessions for a given race from OpenF1 API and store/update in local database
-
-#### Stints
-- `POST /stints/` -> Add a new stint
-- `GET /stints/ ` -> Retrieve all stints
-- `GET /stints/{stint_id}` -> Retrieve a stint by stint_id
-- `PUT /stints/{stint_id}` -> Update stint information
-- `DELETE /stints/{stint_id}` -> Delete a stint
-- `POST /stints/{race_id}` -> Fetch all stints for a given race from OpenF1 API and store/update in local database
-
-#### Laps
-- `POST /laps/` -> Add a new lap
-- `GET /laps/ ` -> Retrieve all laps
-- `GET /laps/{lap_id}` -> Retrieve a lap by lap_id
-- `PUT /laps/{lap_id}` -> Update lap information
+- `POST /races/sync` -> Fetch races from OpenF1 API and synchronize them with the local database
 - `DELETE /laps/{lap_id}` -> Delete a lap
-- `POST /laps/{race_id}` -> Fetch all laps for a given race from OpenF1 API and store/update in local database
-
-#### Telemetry
-- `POST /telemetry/` -> Add a new telemetry
-- `GET /telemetry/ ` -> Retrieve all telemetry
-- `GET /telemetry/{telemetry_id}` -> Retrieve a telemetry by telemetry_id
-- `PUT /telemetry/{telemetry_id}` -> Update telemetry information
-- `DELETE /telemetry/{telemetry_id}` -> Delete a telemetry
 
 ## Testing API:
 This API can be tested in two ways:
@@ -68,7 +58,7 @@ This API can be tested in two ways:
 
 ### Example requests:
 
-#### 1. Create a new driver
+#### Create a new driver
 `POST /drivers/`
 ```json
 {
@@ -83,34 +73,7 @@ This API can be tested in two ways:
 }
 ```
 
-#### 2. Update a driver (only selected fields)
-`PUT /drivers/test_testing`
-```json
-{
-    "driver_number": 50,
-    "team_name": "Ferrari"
-}
-```
-
-#### 3. Delete a driver
-`DELETE /drivers/test_testing`
-```json
-{
-    "detail": "Driver 'test_testing' is deleted."
-}
-```
-
-#### 4. Sync drivers from OpenF1 API
-`POST /drivers/sync`
-```json
-{
-    "created": 84,
-    "updated": 6304,
-    "total": 6388
-}
-```
-
-#### 5. Get all races
+#### Retrieve race data
 `GET /races/`
 ```json
 {
@@ -123,25 +86,26 @@ This API can be tested in two ways:
 }
 ```
 
-#### 6. Sync races from OpenF1 API
+#### Synchronize races from OpenF1 API
 `POST /races/sync`
 ```json
 {
-    "created": 65,
-    "updated": 0,
-    "total": 65
+    "created": 33,
+    "updated": 67,
+    "total": 100
 }
 ```
 
 ## Data integration:
+The project uses custom synchronization scripts for sessions, stints, laps, telemetry and weather data ingestion. These ETL-style scripts automate data fetching, processing and storage into the local database.
 
-Data from **OpenF1** API (table drivers, races, sessions, stints and laps) and **FastF1** python library (additional lap data, telemetry and weather) are merged and synchronized locally to produce a dataset for model training.
+Data from **OpenF1** API (`drivers`, `races`, `sessions`, `stints` and `laps`) and **FastF1** python library (additional lap data, telemetry and weather) are merged and synchronized locally to create datasets for analytics and machine learning use cases.
 
-Telemetry data is retrieved from FastF1 at lap level and aggregated into structured metrics that are stored in the telemetry table.
+Telemetry data is retrieved from FastF1 at lap level, aggregated into structured telemetry features and stored in the `telemetry` table.
 
-Weather data is retrieved from FastF1 session weather data, aggregated into structured session-level metrics and stored in the weather table.
+Weather data is retrieved from FastF1 session weather data, aggregated into structured session-level weather features and stored in the `weather` table.
 
-## How to install this project:
+## Getting started:
 1. Create and activate virtual environment:
     ```bash 
     python3 -m venv venv
@@ -152,8 +116,8 @@ Weather data is retrieved from FastF1 session weather data, aggregated into stru
     ```bash
     uvicorn app.main:app --reload
     ```
-3. Sync via POSTMAN or HTTP requests like it's explained above in **Features**.
-3. Automated sync via scripts in this order:
+3. Sync via Postman or HTTP requests as explained above in **Features**.
+4. Automated sync via scripts in this order:
     ```bash
     python -m scripts.sync_all_sessions
     python -m scripts.sync_all_stints
@@ -164,7 +128,7 @@ Weather data is retrieved from FastF1 session weather data, aggregated into stru
     python -m scripts.sync_telemetry_from_fastf1
     python -m scripts.sync_weather_from_fastf1
     ```
-4. Export dataset for ML:
+5. Export dataset for ML:
     ```bash 
     python -m scripts.export_laps
     ```
@@ -182,7 +146,7 @@ The database file `f1_stats.db` will be created automatically in project root wh
 - `app/routers` -> contains API endpoints (routes) defined with FastAPI, connected to repositories and schemas.
 
 ### Sync scripts:
-This project uses helper **scripts** that fetch and store large amount of data from sessions, stints and laps directly into the database. They are located in folder `scripts/`.
+This project uses helper **scripts** that fetch and store large amounts of data from sessions, stints, laps, telemetry and weather directly into the database. They are located in folder `scripts/`.
 
 #### Available scripts:
 - `scripts/sync_all_sessions.py` -> fetches all sessions for all races and stores them in the database (table sessions).
@@ -229,41 +193,23 @@ Aggregated weather features include:
 The aggregated weather data is stored in the weather table and can later be integrated with lap-level race data for feature engineering and machine learning analysis.
 
 ## Machine Learning
-This project includes a **Machine Learning** module for analyzing and predicting race pace evolution from created dataset (`laps_dataset.csv`). The models are not finished and will be worked on more after adding more features.
+This project currently includes initial machine learning experimentation for lap time prediction using the created dataset (`laps_dataset.csv`). 
 
-Saving artifacts for all models:
-    - trained models (.pkl)
-    - evaluation metrics (.json)
-    - visualizations (.png)
+The current ML workflow includes:
+- dataset preparation
+- feature engineering
+- model training
+- model evaluation
+- saving model artifacts, metrics and visualizations
 
-### First model: Linear Regression model
-- Target: lap_duration
-- Input features: lap_number, stint_number, stint_lap_number, tyre_age_at_start, pit_in_time, pit_out_time, driver_id, tyre_compound, circuit_location, session_name
-- Evaluation with metrics: 
-    - R2: 0.6024,
-    - MAE: 4.6014,
-    - MSE: 72.0994,
-    - RMSE: 8.4911.
+The target variable is `lap_duration`.
 
-### Second model: Random Forest model
-- Target and input features same as in Linear Regression model.
-- Contains Feature importance plot.
-- Evaluation with metrics: 
-    - R2: 0.9247,
-    - MAE: 1.2130,
-    - MSE: 13.6570,
-    - RMSE: 3.6955.
-    - Train R2: 0.9839
-    - Test R2: 0.9247
+Current models:
+- Linear Regression
+- Random Forest Regressor
+- Tuned Random Forest Regressor
 
-### Third model: Tuned Random Forest model
-- After the baseline Random Forest Regressor was trained, a tuned version was developed using hyperparameter optimization.
-- Best hyperparameters:
-    - n_estimators: 300,
-    - min_samples_split: 2,
-    - min_samples_leaf: 1,
-    - max_features: "sqrt",
-    - max_depth: 30.
+The models currently use lap, stint, tyre, pit stop, driver, circuit and session-related features. Future iterations will include additional telemetry and weather-based features.
 
 ## Next steps:
 - add feature engineering for race conditions
