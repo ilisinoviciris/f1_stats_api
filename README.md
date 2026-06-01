@@ -212,9 +212,13 @@ Current models:
 The models currently use lap, stint, tyre, pit stop, driver, circuit and session-related features. Future iterations will include additional telemetry and weather-based features.
 
 ## Next steps:
-- add feature engineering for race conditions
-- upgrade ML models 
-- migrate to PostgreSQL
-- add containerization (Docker)
-- add more visualizations for race analytics.
+- add advanced feature engineering for race conditions, telemetry and weather data
+- improve telemetry and weather integration for more detailed race analysis
+- expand machine learning experimentation and model evaluation
+- migrate from SQLite to PostgreSQL
+- add automated scheduled synchronization
+- add containerization with Docker
+- develop analytics visualizations and dashboards
+- improve API endpoints for analytics and data exploration
+- experiment with predictive and comparison-based race analytics
 
