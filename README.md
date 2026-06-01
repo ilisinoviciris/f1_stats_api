@@ -1,7 +1,9 @@
-# REST API Formula 1 Statistics Project
+# Formula 1 Analytics Platform
 
 ## Overview:
-A learning project that demonstrates how to build a REST API with **FastAPI**, integrate two external data sources (OpenF1 + FastF1), store them in a local database and use the data for **machine learning analysis**.
+An ongoing Formula 1 analytics and data engineering project focused on backend development, ETL pipelines, telemetry processing and machine learning experimentation.
+
+The project demonstrates how to build a REST API with **FastAPI**, integrate external data sources (OpenF1 + FastF1), design relational database schemas and process telemetry and weather data for analytics and **ML** use cases.
 
 ## Features:
 
