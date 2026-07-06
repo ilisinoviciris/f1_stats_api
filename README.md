@@ -5,6 +5,8 @@ An ongoing Formula 1 analytics and data engineering project focused on backend d
 
 The project demonstrates how to build a REST API with **FastAPI**, integrate external data sources (OpenF1 + FastF1), design relational database schemas and process telemetry and weather data for analytics and **ML** use cases.
 
+The project also includes an offline analytics engine that generates driver intelligence metrics (e.g. driver consistency) from historical race data. These analytics modules are designed to support future feature engineering and machine learning workflows.
+
 ## Tech stack:
 
 ### Backend & API
@@ -192,6 +194,22 @@ Aggregated weather features include:
 
 The aggregated weather data is stored in the weather table and can later be integrated with lap-level race data for feature engineering and machine learning analysis.
 
+## Analytics
+
+The project includes a modular analytics engine that transforms Formula 1 data into higher-level performance metrics.
+
+Each analytics module focuses on a different aspect of race analysis and generates reusable datasets that can later be integrated into the API or used for feature engineering and machine learning.
+
+Current modules:
+- Driver Intelligence
+    - Driver Consistency
+
+Planned modules:
+- Tyre Intelligence
+- Weather Intelligence
+- Racecraft Intelligence
+- Car Extraction Intelligence
+
 ## Machine Learning
 This project currently includes initial machine learning experimentation for lap time prediction using the created dataset (`laps_dataset.csv`). 
 
@@ -212,6 +230,7 @@ Current models:
 The models currently use lap, stint, tyre, pit stop, driver, circuit and session-related features. Future iterations will include additional telemetry and weather-based features.
 
 ## Next steps:
+- expand the Analytics Engine with additional intelligence modules
 - add advanced feature engineering for race conditions, telemetry and weather data
 - improve telemetry and weather integration for more detailed race analysis
 - expand machine learning experimentation and model evaluation
@@ -219,6 +238,4 @@ The models currently use lap, stint, tyre, pit stop, driver, circuit and session
 - add automated scheduled synchronization
 - add containerization with Docker
 - develop a TypeScript-based dashboard for interactive Formula 1 analytics and visualizations
-- improve API endpoints for analytics and data exploration
-- experiment with predictive and comparison-based race analytics
 
